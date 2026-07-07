@@ -32,7 +32,7 @@ graph LR
     style C fill:#e5ccff,stroke:#7f00ff,stroke-width:2px;
     style D fill:#cce5ff,stroke:#3333ff,stroke-width:2px;
     style F fill:#ccffcc,stroke:#33cc33,stroke-width:2px;
-    style H fill:#ffcce5,stroke:#cc0066,stroke-width:2px;'''
+    style H fill:#ffcce5,stroke:#cc0066,stroke-width:2px;
 
 
 
