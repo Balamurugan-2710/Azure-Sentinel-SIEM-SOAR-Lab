@@ -35,7 +35,8 @@ graph TD
 ## 📊 Phase 1: Threat Intelligence Visualization
 The custom-designed Microsoft Sentinel Workbook maps live network brute-force attempts globally, parsing location parameters to dynamically render threat cluster densities.
 
-![Global Threat Map](threat-map.png)
+<img width="1802" height="647" alt="image" src="https://github.com/user-attachments/assets/fc70a383-b2ed-4043-8236-f258aac29cf2" />
+
 
 ### Custom KQL Query Used for Data Extraction:
 ```kql
