@@ -1,0 +1,43 @@
+1.) Inbound Threat Detection (The Base Query)
+This query isolates all failed RDP logon events to find exactly who is hitting your honeypot machine, extracting their IP addresses and account target names.
+
+Code snippet
+SecurityEvent
+| where EventID == 4625
+| summarize FailedAttempts = count() by IpAddress, TargetUserName, Computer
+| order by FailedAttempts desc
+
+
+
+2.) Geolocation Aggregation (For Your Threat Map)
+This query extracts the tracking data used to feed your visual Map Workbook, filtering out empty coordinates so they map flawlessly.
+
+Code snippet
+SecurityEvent
+| where EventID == 4625
+| extend latitude = toreal(latitude), longitude = toreal(longitude)
+| summarize FailedAttempts = count() by IpAddress, latitude, longitude, cityname, countryname
+| where isnotempty(latitude) and isnotempty(longitude)
+
+
+
+3.) Lateral Movement & Blast Radius Audit (Your Investigation Query)
+This is the query you ran during your triage of Incident ID 5 to verify whether an attacker successfully breached the system or if they were completely deflected.
+
+Code snippet
+SecurityEvent
+| where IpAddress == "103.93.36.129"
+| where EventID in (4624, 4625)
+| summarize Count = count() by EventID, Account
+(Note: 4625 indicates a failed attempt, while 4624 indicates a successful logon.)
+
+
+
+4.) High-Velocity Brute Force Threshold (Your Analytics Rule Logic)
+This is the scheduled tracking query that automatically triggers your incidents when an attacker tries to log in too many times within a short window.
+
+Code snippet
+SecurityEvent
+| where EventID == 4625
+| summarize FailedCount = count() by IpAddress, Account, Computer
+| where FailedCount >= 10
