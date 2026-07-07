@@ -33,6 +33,8 @@ graph LR
     style D fill:#cce5ff,stroke:#3333ff,stroke-width:2px;
     style F fill:#ccffcc,stroke:#33cc33,stroke-width:2px;
     style H fill:#ffcce5,stroke:#cc0066,stroke-width:2px;
+
+    Click **`Commit changes...`** at the bottom, and that big red error box will turn into your clean, interactive visual architecture flowchart!
 ---
 
 ## 📊 Phase 1: Threat Intelligence Visualization
