@@ -16,24 +16,19 @@ An end-to-end security engineering project demonstrating the deployment, configu
 
 ## 🏗️ Architectural Overview
 
-graph LR
-    A[🌐 Attacker IP] -->|Brute Force RDP| B[🖥️ Azure Windows VM<br>vm-honeypot]
-
-    B --> C[📡 Azure Monitor Agent]
-    C --> D[(📊 Log Analytics Workspace)]
-
+```mermaid
+graph TD
+    A[🌐 Attacker IP] -->|Brute Force RDP| B(🖥️ Azure Windows VM <br> vm-honeypot)
+    B --> C[🕵️ Azure Monitor Agent]
+    C --> D{📊 Log Analytics Workspace}
     D --> E[🛡️ Microsoft Sentinel]
-
-    E -->|Analytics Rule<br>Event ID 4625 Threshold| F[🚨 Incident Created]
-
+    E -->|Analytics Rule <br> Event ID 4625 Threshold| F[🚨 Incident Created]
     F --> G[⚡ Automation Rule]
-
     G --> H[⚙️ Azure Logic App]
-
     H --> I[📧 Email Alert to SOC Analyst]
-    H --> J[🧱 Update NSG<br>Deny Attacker IP]
-
-    J -. Blocks .-> A
+    H --> J[🧱 Update NSG <br> Deny Attacker IP]
+    J -.->|Blocks| A
+```
 
 ---
 
