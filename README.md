@@ -36,3 +36,24 @@ SecurityEvent
 | extend latitude = toreal(latitude), longitude = toreal(longitude)
 | summarize FailedAttempts = count() by IpAddress, latitude, longitude, cityname, countryname
 | where isnotempty(latitude) and isnotempty(longitude)
+
+
+
+
+---
+
+## 💡 Troubleshooting & Challenges
+
+Building this engineering lab introduced several real-world cloud configuration challenges that required active debugging and remediation:
+
+### 1. Microsoft Sentinel Automation Playbook Permission Error
+* **Challenge:** When attempting to attach the `soar-email-alert` playbook to the scheduled analytics rule, a critical warning appeared stating: `No Microsoft Sentinel permission to run playbooks on this resource group.`
+* **Resolution:** Even as a subscription owner, explicit cross-resource permissions must be assigned. Navigated to the core resource group access blade (`RG-SOC-Lab` -> Access Control IAM) and managed playbook permissions to formally grant Microsoft Sentinel authorization to execute workflows inside that target boundary container.
+
+### 2. Single Sign-On (SSO) Authentication Pop-up Lockout
+* **Challenge:** When attempting to initialize the API connection inside the Logic Apps Designer canvas card for the Microsoft Sentinel connection step, the right panel hung indefinitely on `Adding new connection...`.
+* **Resolution:** Isolated the issue to the web browser's strict privacy shields blocking cross-origin identity verification pop-ups. Configured explicit URL exceptions for `portal.azure.com` within the browser address bar configuration, allowing the OAuth sign-in window to successfully render and complete the token handshake.
+
+### 3. Logic App Token Array Misalignment ('For each' clumping)
+* **Challenge:** Upon inserting the dynamic `IP Address` data token from the entity parser step into the Outlook email template body, the designer engine automatically wrapped the action inside a `For each` array block. This scrambled the plain-text body variables, clumping data tags at the header line and breaking string values.
+* **Resolution:** Completely wiped the text buffer, manually re-initialized the raw structural string placeholders, and surgically re-mapped each individual system attribute (`Incident Title`, `Incident Severity`, and `IPs Address`) directly to the end of its respective clean line parameter space within the dynamic code block structure.
