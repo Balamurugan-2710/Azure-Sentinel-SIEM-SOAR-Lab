@@ -15,12 +15,24 @@ An end-to-end security engineering project demonstrating the deployment, configu
 ---
 
 ## 🏗️ Architectural Overview
-1. **Telemetry Generation:** Provisioned an intentionally exposed Windows Virtual Machine to the public internet to capture real-world malicious authentication traffic.
-2. **Data Pipeline Pipeline:** Logged failed and successful Windows authentication attempts (Event IDs 4625 & 4624) and routed them natively via the Azure Monitor Agent to a centralized Log Analytics Workspace.
-3. **SIEM Analytics:** Configured Microsoft Sentinel on top of the log data, writing custom KQL queries to establish alert thresholds for RDP brute-force velocity.
-4. **Threat Intelligence Mapping:** Developed an interactive graphical workbook utilizing geographic coordinate mapping to track attacker clusters globally in real time.
-5. **SOAR Containment:** Built a serverless Logic App workflow triggered dynamically upon incident creation to parse attacker IP entities, fire high-priority triage emails, and programmatically inject explicit "Deny" rules into the firewall (NSG) for automated threat mitigation.
 
+```mermaid
+graph LR
+    A[🌐 Attacker IP] -->|Brute-Force RDP| B(🖥️ Azure VM <br> vm-honeypot)
+    B -->|Security Logs EventID 4625| C{📊 Log Analytics <br> Workspace}
+    C -->|KQL Analytics Rule| D[🛡️ Microsoft Sentinel <br> SIEM Engine]
+    D -->|Trigger Incident ID 5| E[⚡ Sentinel Automation <br> Rule]
+    E -->|Run Playbook Workflow| F(⚙️ Azure Logic App <br> soar-email-alert)
+    F -->|1. Email Route Notification| G[📬 SOC Analyst Inbox]
+    F -->|2. Restrict Inbound Packet Flow| H[🧱 Network Security Group <br> NSG Deny Rule]
+    H -.->|Drop Traffic Connection| A
+
+    style A fill:#ffcccc,stroke:#ff3333,stroke-width:2px;
+    style B fill:#ffe5cc,stroke:#ff8000,stroke-width:2px;
+    style C fill:#e5ccff,stroke:#7f00ff,stroke-width:2px;
+    style D fill:#cce5ff,stroke:#3333ff,stroke-width:2px;
+    style F fill:#ccffcc,stroke:#33cc33,stroke-width:2px;
+    style H fill:#ffcce5,stroke:#cc0066,stroke-width:2px;
 ---
 
 ## 📊 Phase 1: Threat Intelligence Visualization
