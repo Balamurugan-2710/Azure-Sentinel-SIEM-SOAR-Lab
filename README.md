@@ -34,8 +34,7 @@ graph LR
     style F fill:#ccffcc,stroke:#33cc33,stroke-width:2px;
     style H fill:#ffcce5,stroke:#cc0066,stroke-width:2px;
 
--------------------------------------------------------------------------------------------------------------------------------------------------------------------
----
+
 
 ## 📊 Phase 1: Threat Intelligence Visualization
 The custom-designed Microsoft Sentinel Workbook maps live network brute-force attempts globally, parsing location parameters to dynamically render threat cluster densities.
