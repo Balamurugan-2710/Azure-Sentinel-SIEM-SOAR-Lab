@@ -16,25 +16,26 @@ An end-to-end security engineering project demonstrating the deployment, configu
 
 ## 🏗️ Architectural Overview
 
-```mermaid
 graph LR
-    A[🌐 Attacker IP] -->|Brute-Force RDP| B(🖥️ Azure VM <br> vm-honeypot)
-    B -->|Security Logs EventID 4625| C{📊 Log Analytics <br> Workspace}
-    C -->|KQL Analytics Rule| D[🛡️ Microsoft Sentinel <br> SIEM Engine]
-    D -->|Trigger Incident ID 5| E[⚡ Sentinel Automation <br> Rule]
-    E -->|Run Playbook Workflow| F(⚙️ Azure Logic App <br> soar-email-alert)
-    F -->|1. Email Route Notification| G[📬 SOC Analyst Inbox]
-    F -->|2. Restrict Inbound Packet Flow| H[🧱 Network Security Group <br> NSG Deny Rule]
-    H -.->|Drop Traffic Connection| A
+    A[🌐 Attacker IP] -->|Brute Force RDP| B[🖥️ Azure Windows VM<br>vm-honeypot]
 
-    style A fill:#ffcccc,stroke:#ff3333,stroke-width:2px;
-    style B fill:#ffe5cc,stroke:#ff8000,stroke-width:2px;
-    style C fill:#e5ccff,stroke:#7f00ff,stroke-width:2px;
-    style D fill:#cce5ff,stroke:#3333ff,stroke-width:2px;
-    style F fill:#ccffcc,stroke:#33cc33,stroke-width:2px;
-    style H fill:#ffcce5,stroke:#cc0066,stroke-width:2px;
+    B --> C[📡 Azure Monitor Agent]
+    C --> D[(📊 Log Analytics Workspace)]
 
+    D --> E[🛡️ Microsoft Sentinel]
 
+    E -->|Analytics Rule<br>Event ID 4625 Threshold| F[🚨 Incident Created]
+
+    F --> G[⚡ Automation Rule]
+
+    G --> H[⚙️ Azure Logic App]
+
+    H --> I[📧 Email Alert to SOC Analyst]
+    H --> J[🧱 Update NSG<br>Deny Attacker IP]
+
+    J -. Blocks .-> A
+
+---
 
 ## 📊 Phase 1: Threat Intelligence Visualization
 The custom-designed Microsoft Sentinel Workbook maps live network brute-force attempts globally, parsing location parameters to dynamically render threat cluster densities.
